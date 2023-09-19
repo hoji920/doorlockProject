@@ -18,11 +18,12 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import login from './components/login';
-import main from './components/main';
-import join from './components/join';
-import pwState from './components/pwState';
+import Login from './components/Login';
+import Main from './components/Main';
+import Join from './components/Join';
+import PwState from './components/PwState';
 import Usagedetails from './components/Usagedetails';
+import TemporaryPw from './components/TemporaryPw';
 
 const Stack = createStackNavigator();
 
@@ -34,11 +35,12 @@ function App(){
         screenOptions={{
           cardStyle: {backgroundColor: '#fff'}, // 원하는 백그라운드 컬러 설정
         }}>
-          <Stack.Screen name="main" component={main} />
-          <Stack.Screen name="login" component={login} />
-          <Stack.Screen name="join" component={join} />
-          <Stack.Screen name="pwState" component={pwState} />
+          <Stack.Screen name="main" component={Main} />
+          <Stack.Screen name="login" component={Login} />
+          <Stack.Screen name="join" component={Join} />
+          <Stack.Screen name="pwState" component={PwState} />
           <Stack.Screen name="Usagedetails" component={Usagedetails} />
+          <Stack.Screen name="TemporaryPw" component={TemporaryPw} />
       </Stack.Navigator>
     </NavigationContainer>
   );

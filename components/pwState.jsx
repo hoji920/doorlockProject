@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-function pwState(){
+function PwState(){
 
     const [mypw,setMypw] = useState('');
     const [newpw,setNewpw] = useState('');
@@ -126,4 +126,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default pwState
+export default PwState

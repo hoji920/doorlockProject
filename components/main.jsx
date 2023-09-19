@@ -14,7 +14,7 @@ import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 
-function main({navigation}){
+function Main({navigation}){
 
     const [lock,setLock] = useState(faLock);
     const [moojeeg,setMoojeeg] = useState(false);
@@ -68,7 +68,7 @@ function main({navigation}){
                     </TouchableOpacity>
                 </View>
                 <View style={styles.mainButtonToll}>
-                    <MainButton name={'임시비밀번호'} />
+                    <MainButton name={'임시비밀번호'} onPress={()=>navigation.navigate('TemporaryPw')} />
                     <MainButton name={'무적'} onPress={moojeegOn}/>
                 </View>
                 <View style={styles.mainButtonToll}>
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default main
+export default Main

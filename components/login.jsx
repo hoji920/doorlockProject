@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-function login({navigation}){
+function Login({navigation}){
 
     const [idText, setIdText] = useState('');
     const [pwText, setPwText] = useState('');
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default login
+export default Login
