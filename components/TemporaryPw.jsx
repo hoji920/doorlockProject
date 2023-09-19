@@ -1,3 +1,4 @@
+//임시 비밀번호
 import { useState } from 'react';
 import {
     SafeAreaView,

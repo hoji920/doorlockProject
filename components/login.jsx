@@ -1,3 +1,4 @@
+//로그인 페이지
 import { useState } from 'react';
 import {
     SafeAreaView,
@@ -43,6 +44,7 @@ function Login({navigation}){
                         placeholder='비밀번호를 입력해주세요.'
                         onChangeText={handlePwChange}
                         value={pwText}
+                        secureTextEntry={true}
                     />
                 </View>
                 <View style={styles.loginBtn}>

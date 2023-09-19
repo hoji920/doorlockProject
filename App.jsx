@@ -24,6 +24,7 @@ import Join from './components/Join';
 import PwState from './components/PwState';
 import Usagedetails from './components/Usagedetails';
 import TemporaryPw from './components/TemporaryPw';
+import UseBook from './components/UseBook';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ function App(){
           <Stack.Screen name="pwState" component={PwState} />
           <Stack.Screen name="Usagedetails" component={Usagedetails} />
           <Stack.Screen name="TemporaryPw" component={TemporaryPw} />
+          <Stack.Screen name="UseBook" component={UseBook} />
       </Stack.Navigator>
     </NavigationContainer>
   );

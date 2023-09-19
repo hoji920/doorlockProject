@@ -1,3 +1,4 @@
+//이용내역 페이지
 import React, { useState } from 'react';
 import {
   SafeAreaView,
@@ -56,7 +57,7 @@ function Usagedetails() {
 
     return(
         <SafeAreaView>
-            <ScrollView>
+            
                 <View style={styles.container}>
                     <Text style={styles.containerText}>이용내역</Text>
                 </View>
@@ -70,7 +71,7 @@ function Usagedetails() {
                    contentContainerStyle={{width:'100%'}}
                 />
                 </View>
-            </ScrollView>
+            
         </SafeAreaView>
     )
 }
