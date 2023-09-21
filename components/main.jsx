@@ -108,7 +108,7 @@ function Main({navigation}){
                 </View>
                 <View style={styles.mainButtonToll}>
                     <MainButton name={'비밀번호 관리'} key={'pwState'} onPress={()=>{navigation.navigate('pwState')}} />
-                    <MainButton name={'예약'} />
+                    <MainButton name={'예약'} onPress={()=>navigation.navigate('Reservation')}/>
                 </View>
                 <View style={{justifyContent:'center', alignItems:'center', marginTop:20}}>
                     <TouchableOpacity style={styles.useBtn} onPress={()=>{navigation.navigate('UseBook')}}>

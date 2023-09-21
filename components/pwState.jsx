@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 100,
         backgroundColor: '#7D74E4',
-
     }
     
 });
