@@ -17,6 +17,7 @@ function TemporaryPw(){
     const [newPw,setNewPw] = useState('');
     const [newRpw,setNewRpw] = useState('');
     const [updonwText,setUpDonwText] = useState(0);
+    const [timeing,setTimeing] = useState(0);
 
     const isBtn = newPw !== '' && newRpw !== '' && newPw === newRpw && updonwText >= 1;
 
@@ -76,6 +77,15 @@ function TemporaryPw(){
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.updownBtn} onPress={downBtn}>
                         <Text style={styles.updownText}>DOWN</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.haveTime}>
+                    <View>
+                        <Text style={styles.timeText}>남은 시간</Text>
+                        <Text style={styles.hText}>{timeing} 시간</Text>
+                    </View>
+                    <TouchableOpacity style={styles.updownBtn}>
+                        <Text style={styles.updownText}>삭제</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.okayBtnContainer}>
@@ -144,7 +154,8 @@ const styles = StyleSheet.create({
     okayBtnContainer: {
         justifyContent:'center',
         alignItems:'center',
-        marginTop:'30%'
+        marginTop:'20%',
+        marginBottom:'20%'
     },
     okayBtn: {
         width: 250,
@@ -155,6 +166,17 @@ const styles = StyleSheet.create({
         marginTop: 50,
         backgroundColor:'#000'
     },
+    haveTime: {
+        marginHorizontal:20,
+        marginTop:20,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    hText: {
+        marginTop:10,
+        fontSize:16
+    }
 })
 
 export default TemporaryPw

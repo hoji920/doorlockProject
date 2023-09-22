@@ -20,7 +20,7 @@ function Reservation(){
     const [openTime,setOpenTime] = useState(0);
     const [openMinute, setOpenMinute] = useState(0);
     
-    const isBtn = isTimeVisible === false && openTime > 0 || openMinute > 0;
+    const isBtn = isTimeVisible === false && openTime > 0 || openMinute > 0 && isTimeVisible === false;
 
     const okay = () => {
         setTimeVisible(true);
