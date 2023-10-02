@@ -14,14 +14,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { TextInput } from 'react-native-gesture-handler';
 
 
 function Main({navigation}){
+
+    const [isEnteringPassword, setIsEnteringPassword] = useState(false);
+    const [isMoojeegEnabled, setIsMoojeegEnabled] = useState(false);
+
 
     const [lock,setLock] = useState(faLock);
     const [moojeeg,setMoojeeg] = useState(false);
 
     const [loginCheck, setLoginCheck] = useState(true);
+    const [moojeegpw, setMooJeegPw] = useState('');
+
+    const handelMooJeegPwchange = (value) => {
+        setMooJeegPw(value);
+    }
 
     const logOut = () => {
         setLoginCheck(loginCheck === false);
@@ -34,6 +44,27 @@ function Main({navigation}){
         Alert.alert('알림', '로그인 후 이용바랍니다.');
       }
     };
+
+    const askToDisableMoojeeg = () => {
+        Alert.alert(
+            '무적 모드 해제',
+            '무적 모드를 해제하시겠습니까?',
+            [
+                {
+                    text: '확인',
+                    onPress: () => {
+                        setMoojeeg(false);
+                        setIsMoojeegEnabled(false);
+                    },
+                },
+                {
+                    text: '아니요',
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: false }
+        );
+    }
 
     const lockChange = () => {
         if (!moojeeg) { 
@@ -53,9 +84,53 @@ function Main({navigation}){
         </TouchableOpacity>
     )
 
+    const MooJeegPw = () => (
+        <View>
+            {isEnteringPassword && (
+                <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                    <TextInput 
+                        placeholder='비밀번호를 입력해주세요.'
+                        secureTextEntry={true}
+                        value={moojeegpw} 
+                        onChangeText={handelMooJeegPwchange}
+                        style={styles.moojeegpw}
+                        autoCorrect={false} 
+                    />
+                    <TouchableOpacity onPress={checkPassword} style={{width:50,height:30,backgroundColor:'#7D74E4',justifyContent:'center',alignItems:'center',borderRadius:5,marginLeft:10,marginTop:15}}>
+                        <Text style={{color:'#fff'}}>확인</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+        </View>
+    );
+
+    const checkPassword = () => {
+        // 여기에 비밀번호 확인 로직을 구현하세요.
+        if (moojeegpw === '1') { // 올바른 비밀번호를 넣어주세요.
+            setIsMoojeegEnabled(true);
+            setIsEnteringPassword(false);
+            setMoojeeg(true);
+            setMooJeegPw('');
+        } else {
+            Alert.alert('알림', '올바른 비밀번호를 입력하세요.');
+        }
+    }
+
+    // const moojeegOn = () => {
+    //     setMoojeeg(!moojeeg);
+    //     setLock(faLock);
+    // }
+
     const moojeegOn = () => {
-        setMoojeeg(!moojeeg);
-        setLock(faLock);
+        if (isMoojeegEnabled) {
+            // 이미 무적 모드가 활성화되어 있을 때 해제를 물어봅니다.
+            askToDisableMoojeeg();
+        } else {
+            // 무적 모드가 활성화되어 있지 않으면 활성화합니다.
+            setIsEnteringPassword(true);
+            setLock(faLock);
+            setIsMoojeegEnabled(true);
+        }
     }
 
     return(
@@ -101,6 +176,9 @@ function Main({navigation}){
                             </View>
                         </View>
                     </TouchableOpacity>
+                </View>
+                <View style={{justifyContent:'center',alignItems:'center'}}>
+                    {isMoojeegEnabled && <MooJeegPw />}
                 </View>
                 <View style={styles.mainButtonToll}>
                     <MainButton name={'임시비밀번호'} onPress={()=>navigation.navigate('TemporaryPw')} />
@@ -184,6 +262,17 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         borderRadius:20
+    },
+    moojeegpw: {
+        width: 250,
+        height: 35,
+        borderColor: '#7D74E4',
+        borderWidth: 2,
+        paddingHorizontal: 8,
+        marginTop: 16,
+        fontSize: 14,
+        padding: 3,
+        borderRadius: 5,
     }
 })
 

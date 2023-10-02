@@ -18,6 +18,7 @@ function TemporaryPw(){
     const [newRpw,setNewRpw] = useState('');
     const [updonwText,setUpDonwText] = useState(0);
     const [timeing,setTimeing] = useState(0);
+    const [deleteh,setDeleteh] = useState(false);
 
     const isBtn = newPw !== '' && newRpw !== '' && newPw === newRpw && updonwText >= 1;
 
@@ -39,6 +40,11 @@ function TemporaryPw(){
 
     const handelNewRpwChange = (value) => {
         setNewRpw(value);
+    }
+
+    const deleteTime = () => {
+        setTimeing(0); // timeing 상태를 초기화
+        setUpDonwText(0); // 시간 입력 상태를 초기화
     }
 
     return(
@@ -84,7 +90,7 @@ function TemporaryPw(){
                         <Text style={styles.timeText}>남은 시간</Text>
                         <Text style={styles.hText}>{timeing} 시간</Text>
                     </View>
-                    <TouchableOpacity style={styles.updownBtn}>
+                    <TouchableOpacity style={styles.updownBtn} onPress={deleteTime}>
                         <Text style={styles.updownText}>삭제</Text>
                     </TouchableOpacity>
                 </View>
