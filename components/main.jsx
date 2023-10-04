@@ -21,7 +21,7 @@ function Main({navigation}){
 
     const [isEnteringPassword, setIsEnteringPassword] = useState(false);
     const [isMoojeegEnabled, setIsMoojeegEnabled] = useState(false);
-
+    const [moo,setMoo] = useState(false)
 
     const [lock,setLock] = useState(faLock);
     const [moojeeg,setMoojeeg] = useState(false);
@@ -34,7 +34,11 @@ function Main({navigation}){
     }
 
     const logOut = () => {
-        setLoginCheck(loginCheck === false);
+        if (!isMoojeegEnabled) {
+          setLoginCheck(false);
+        } else {
+          Alert.alert('알림', '무적 모드 상태에서는 로그아웃할 수 없습니다.');
+        }
     }
   
     const handleButtonClick = (onPress) => {
@@ -55,6 +59,7 @@ function Main({navigation}){
                     onPress: () => {
                         setMoojeeg(false);
                         setIsMoojeegEnabled(false);
+                        setMoo(false);
                     },
                 },
                 {
@@ -84,33 +89,35 @@ function Main({navigation}){
         </TouchableOpacity>
     )
 
-    const MooJeegPw = () => (
-        <View>
-            {isEnteringPassword && (
-                <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
-                    <TextInput 
-                        placeholder='비밀번호를 입력해주세요.'
-                        secureTextEntry={true}
-                        value={moojeegpw} 
-                        onChangeText={handelMooJeegPwchange}
-                        style={styles.moojeegpw}
-                        autoCorrect={false} 
-                    />
-                    <TouchableOpacity onPress={checkPassword} style={{width:50,height:30,backgroundColor:'#7D74E4',justifyContent:'center',alignItems:'center',borderRadius:5,marginLeft:10,marginTop:15}}>
-                        <Text style={{color:'#fff'}}>확인</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
-        </View>
-    );
+    // const MooJeegPw = ({value,onChangeText})=>(
+    
+    //     <View>
+    //         {isEnteringPassword && (
+    //             <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+    //                 <TextInput
+    //                     style={styles.moojeegpw}
+    //                     placeholder='비밀번호를 입력해주세요.'
+    //                     secureTextEntry={true}
+    //                     onChangeText={onChangeText}
+    //                     value={value}
+    //                 />
+    //                 <TouchableOpacity onPress={checkPassword} style={{width:50,height:30,backgroundColor:'#7D74E4',justifyContent:'center',alignItems:'center',borderRadius:5,marginLeft:10,marginTop:15}}>
+    //                     <Text style={{color:'#fff'}}>확인</Text>
+    //                 </TouchableOpacity>
+    //             </View>
+    //         )}
+    //     </View>
+    //     );
+    
 
     const checkPassword = () => {
-        // 여기에 비밀번호 확인 로직을 구현하세요.
-        if (moojeegpw === '1') { // 올바른 비밀번호를 넣어주세요.
+        
+        if (moojeegpw === '1') { // 여기에 비번
             setIsMoojeegEnabled(true);
             setIsEnteringPassword(false);
             setMoojeeg(true);
             setMooJeegPw('');
+            setMoo(true);
         } else {
             Alert.alert('알림', '올바른 비밀번호를 입력하세요.');
         }
@@ -122,10 +129,13 @@ function Main({navigation}){
     // }
 
     const moojeegOn = () => {
-        if (isMoojeegEnabled) {
+        if (isMoojeegEnabled === true){
+            if(moo === true){
             // 이미 무적 모드가 활성화되어 있을 때 해제를 물어봅니다.
             askToDisableMoojeeg();
-        } else {
+        }
+        setIsMoojeegEnabled(!isMoojeegEnabled);
+    }else {
             // 무적 모드가 활성화되어 있지 않으면 활성화합니다.
             setIsEnteringPassword(true);
             setLock(faLock);
@@ -143,8 +153,8 @@ function Main({navigation}){
                         </TouchableOpacity>
                         <View style={{flexDirection:'row', marginTop:5,}}>
             {loginCheck ? (<TouchableOpacity style={styles.logOut} onPress={logOut}>
-                            <Text style={{fontSize:10,color:'blue'}}>로그아웃</Text>
-                        </TouchableOpacity>) : ''}
+                                <Text style={{fontSize:10,color:'blue'}}>로그아웃</Text>
+                            </TouchableOpacity>) : ''}
                         <TouchableOpacity 
                           onPress={() => {
                             if (loginCheck) {
@@ -178,7 +188,23 @@ function Main({navigation}){
                     </TouchableOpacity>
                 </View>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
-                    {isMoojeegEnabled && <MooJeegPw />}
+                    {/* {isMoojeegEnabled && <MooJeegPw value={moojeegpw} onChangeText={handelMooJeegPwchange} />} */}
+                    {isMoojeegEnabled && <View>
+            {isEnteringPassword && (
+                <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                    <TextInput
+                        style={styles.moojeegpw}
+                        placeholder='비밀번호를 입력해주세요.'
+                        secureTextEntry={true}
+                        onChangeText={handelMooJeegPwchange}
+                        value={moojeegpw}
+                    />
+                    <TouchableOpacity onPress={checkPassword} style={{width:50,height:30,backgroundColor:'#7D74E4',justifyContent:'center',alignItems:'center',borderRadius:5,marginLeft:10,marginTop:15}}>
+                        <Text style={{color:'#fff'}}>확인</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+        </View> }
                 </View>
                 <View style={styles.mainButtonToll}>
                     <MainButton name={'임시비밀번호'} onPress={()=>navigation.navigate('TemporaryPw')} />
