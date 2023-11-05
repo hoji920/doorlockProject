@@ -6,20 +6,13 @@
  */
 
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+//import { Provider } from 'react-redux';
+//import store from './redux/store';
+
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import  {AuthProvider} from './contexts/AuthContext';
 import Login from './components/Login';
 import Main from './components/Main';
 import Join from './components/Join';
@@ -28,13 +21,16 @@ import Usagedetails from './components/Usagedetails';
 import TemporaryPw from './components/TemporaryPw';
 import UseBook from './components/UseBook';
 import Reservation from './components/Reservation';
+import WebSocketComponent from './components/WebSocketComponent';
+
 
 const Stack = createStackNavigator();
 
 function App(){
   return (
-    <Provider store={store}>
-    <NavigationContainer>
+    //<Provider>
+       <AuthProvider>
+      <NavigationContainer>
       <Stack.Navigator
         initialRouteName="main"
         screenOptions={{
@@ -48,9 +44,11 @@ function App(){
           <Stack.Screen name="TemporaryPw" component={TemporaryPw} />
           <Stack.Screen name="UseBook" component={UseBook} />
           <Stack.Screen name="Reservation" component={Reservation} />
+          <Stack.Screen name="WebSocketComponent" component={WebSocketComponent} />
       </Stack.Navigator>
     </NavigationContainer>
-    </Provider>
+    </AuthProvider>
+    //</Provider>
   );
 }
 

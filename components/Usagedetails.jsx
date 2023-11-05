@@ -34,11 +34,11 @@ function Usagedetails() {
     const [updown,setUpDown] = useState(false);
 
     const updownBtn = () => {
-        
+
         const sortedData = updown
           ? [...data].sort((a, b) => (a.day > b.day ? 1 : -1))
           : [...data].sort((a, b) => (a.day > b.day ? -1 : 1));
-    
+
         setData(sortedData);
         setUpDown(!updown);
     };
@@ -57,7 +57,7 @@ function Usagedetails() {
 
     return(
         <SafeAreaView>
-            
+
                 <View style={styles.container}>
                     <Text style={styles.containerText}>이용내역</Text>
                 </View>
@@ -65,13 +65,13 @@ function Usagedetails() {
                     <Text style={{fontSize:12, color:'#868e96'}}>{updown ? '오른차순' : '내림차순'}</Text>
                 </TouchableOpacity>
                 <View>
-                <FlatList 
+                <FlatList
                    data={data}
                    renderItem={ReadBox}
                    contentContainerStyle={{width:'100%'}}
                 />
                 </View>
-            
+
         </SafeAreaView>
     )
 }

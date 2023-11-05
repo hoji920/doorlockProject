@@ -1,5 +1,6 @@
 //로그인 페이지
 import { useState } from 'react';
+import axios from 'axios';
 import {
     SafeAreaView,
     StyleSheet,
@@ -11,8 +12,40 @@ import {
     Platform,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-
+import { useAuth } from '../contexts/AuthContext';
 function Login({navigation}){
+    const { setLoginCheck } = useAuth();
+
+const serverUrl = 'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app'; // 서버 url
+
+    const handleLogin = () => {
+
+        console.log(idText,pwText);
+    // POST 요청에 보낼 데이터
+    const postData = {
+      userId: idText,
+      userPw: pwText,
+    };
+
+        // POST 요청 보내기
+        axios.post(`${serverUrl}/login`, postData)
+        .then(response => {
+          // 성공적으로 응답을 받았을 때 처리
+          console.log('서버 응답:', response.data);
+          navigation.navigate('main');
+
+          setLoginCheck(true);
+          // 사용자 이름을 메인 페이지로 전달
+
+        })
+        .catch(error => {
+          // 오류가 발생했을 때 처리
+          console.error('오류:', error);
+        });
+
+    };
+
+
 
     const [idText, setIdText] = useState('');
     const [pwText, setPwText] = useState('');
@@ -31,14 +64,14 @@ function Login({navigation}){
                     <Text>로고</Text>
                 </View>
                 <View style={styles.idpwContainer}>
-                    <TextInput 
+                    <TextInput
                         style={[styles.inputStyle,
                             Platform.OS === 'ios' ? styles.iosInput : styles.androidInput,]}
                         placeholder='아이디를 입력해주세요.'
                         onChangeText={handleIdChange}
                         value={idText}
                     />
-                    <TextInput 
+                    <TextInput
                         style={[styles.inputStyle,
                             Platform.OS === 'ios' ? styles.iosInput : styles.androidInput,]}
                         placeholder='비밀번호를 입력해주세요.'
@@ -48,7 +81,7 @@ function Login({navigation}){
                     />
                 </View>
                 <View style={styles.loginBtn}>
-                    <TouchableOpacity style={styles.btnLo}>
+                    <TouchableOpacity style={styles.btnLo} onPress={handleLogin} >
                         <Text style={styles.btnText}>로그인</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.btnLo} onPress={()=>navigation.navigate('join')}>

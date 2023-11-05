@@ -42,7 +42,7 @@ function PwState(){
                     <Text style={styles.containerText}>도어락 비밀번호 관리 및 설정</Text>
                 </View>
                 <View style={{marginHorizontal:20}}>
-                    <TextInput 
+                    <TextInput
                         style={styles.inputBox}
                         placeholder='현재 비밀번호을 설정해주세요.'
                         onChangeText={handleMypwchange}
@@ -56,7 +56,7 @@ function PwState(){
                     </TouchableOpacity>
                 </View>
                 {btnhiden ? (<View style={{marginHorizontal:20}}>
-                    <TextInput 
+                    <TextInput
                         style={[styles.inputBox,{marginTop:10}]}
                         placeholder='재설정할 비밀번호를 입력해주세요.'
                         onChangeText={handleNewpwchange}
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         fontSize:9,
         color:'gray',
         marginTop:3,
-        
+
     },
     btnstyle: {
         width:100,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         marginTop: 100,
         backgroundColor: '#7D74E4',
     }
-    
+
 });
 
 export default PwState

@@ -1,5 +1,6 @@
 //회원가입 페이지
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,6 +11,29 @@ import {
 } from 'react-native';
 
 function Join() {
+
+  const serverUrl = 'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app'; // 서버 url
+
+          const handleLogin = () => {
+            console.log(id,pw,name,rpw);
+        // POST 요청에 보낼 데이터
+        const postData = {
+          userId: id,
+          userPw: pw,
+          userNickname:name,
+          correctPassword:rpw
+        };
+        // POST 요청 보내기
+        axios.post(`${serverUrl}/signup`, postData)
+        .then(response => {
+          // 성공적으로 응답을 받았을 때 처리
+          console.log('서버 응답:', response.data);
+        })
+        .catch(error => {
+          // 오류가 발생했을 때 처리
+          console.error('오류:', error);
+        });
+        };
   const [name, setName] = useState('');
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
@@ -69,7 +93,7 @@ function Join() {
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity
           style={[styles.okayBtn, { backgroundColor: isButtonEnabled ? '#7D74E4' : '#333' }]}
-          disabled={!isButtonEnabled}
+          disabled={!isButtonEnabled} onPress={handleLogin}
         >
           <Text style={{ color: '#fff', fontSize: 16 }}>가입하기</Text>
         </TouchableOpacity>

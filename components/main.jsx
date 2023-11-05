@@ -1,4 +1,5 @@
 //메인 페이지
+import React from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -15,7 +16,8 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
-
+import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 
 function Main({navigation}){
 
@@ -26,21 +28,45 @@ function Main({navigation}){
     const [lock,setLock] = useState(faLock);
     const [moojeeg,setMoojeeg] = useState(false);
 
-    const [loginCheck, setLoginCheck] = useState(true);
+    //const [loginCheck, setLoginCheck] = useState(true);
     const [moojeegpw, setMooJeegPw] = useState('');
+    const {loginCheck, idText, setLoginCheck } = useAuth();
 
     const handelMooJeegPwchange = (value) => {
         setMooJeegPw(value);
     }
+   const serverUrl = 'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app';
+    const handleOpenDoor = () => {
+        // 클라이언트에서 서버로 POST 요청을 보냅니다.
+        axios
+          .post(`${serverUrl}/door-open`,{userId: 'test',doorlockStatus: true})
+          .then((response) => {
+            console.log(response.data)
+            setMoo(!response.data.doorlockStatus)
 
+          })
+          .catch((error) => {
+            console.error('오류 발생: ' + error);
+          });
+      };
+ //자물쇠 상태변경
+ const lockChange = () => {
+    if (!moojeeg) {
+      if (lock === faLock) {
+        setLock(faLockOpen);
+      } else {
+        setLock(faLock);
+      }
+    }
+  }
     const logOut = () => {
         if (!isMoojeegEnabled) {
-          setLoginCheck(false);
+            setLoginCheck(false);
         } else {
           Alert.alert('알림', '무적 모드 상태에서는 로그아웃할 수 없습니다.');
         }
     }
-  
+
     const handleButtonClick = (onPress) => {
       if (loginCheck) {
         onPress();
@@ -71,16 +97,7 @@ function Main({navigation}){
         );
     }
 
-    const lockChange = () => {
-        if (!moojeeg) { 
-          if (lock === faLock) {
-            setLock(faLockOpen);
-          } else {
-            setLock(faLock);
-          }
-        }
-      }
-
+      //카테고리 버튼
     const MainButton = ({name,onPress,keyProp}) => (
         <TouchableOpacity style={styles.mainButton} key={keyProp} onPress={() => handleButtonClick(onPress)}>
             <View>
@@ -89,29 +106,10 @@ function Main({navigation}){
         </TouchableOpacity>
     )
 
-    // const MooJeegPw = ({value,onChangeText})=>(
-    
-    //     <View>
-    //         {isEnteringPassword && (
-    //             <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
-    //                 <TextInput
-    //                     style={styles.moojeegpw}
-    //                     placeholder='비밀번호를 입력해주세요.'
-    //                     secureTextEntry={true}
-    //                     onChangeText={onChangeText}
-    //                     value={value}
-    //                 />
-    //                 <TouchableOpacity onPress={checkPassword} style={{width:50,height:30,backgroundColor:'#7D74E4',justifyContent:'center',alignItems:'center',borderRadius:5,marginLeft:10,marginTop:15}}>
-    //                     <Text style={{color:'#fff'}}>확인</Text>
-    //                 </TouchableOpacity>
-    //             </View>
-    //         )}
-    //     </View>
-    //     );
-    
 
+        //무적 비번입력 창
     const checkPassword = () => {
-        
+
         if (moojeegpw === '1') { // 여기에 비번
             setIsMoojeegEnabled(true);
             setIsEnteringPassword(false);
@@ -123,11 +121,7 @@ function Main({navigation}){
         }
     }
 
-    // const moojeegOn = () => {
-    //     setMoojeeg(!moojeeg);
-    //     setLock(faLock);
-    // }
-
+    //무적 켜게
     const moojeegOn = () => {
         if (isMoojeegEnabled === true){
             if(moo === true){
@@ -149,13 +143,13 @@ function Main({navigation}){
                 <View style={styles.headerBar}>
                     <View style={styles.headerBars}>
                         <TouchableOpacity onPress={()=>navigation.navigate('login')}>
-                            <Text style={[styles.headerBarText,{fontSize:16,marginTop:7}]}>{loginCheck ? '홍길동님 반갑습니다.' : '로그인을 해주세요.'}</Text>
+                            <Text style={[styles.headerBarText,{fontSize:16,marginTop:7}]}>{loginCheck ? {idText}+'님 환영합니다': '로그인을 해주세요.'}</Text>
                         </TouchableOpacity>
                         <View style={{flexDirection:'row', marginTop:5,}}>
             {loginCheck ? (<TouchableOpacity style={styles.logOut} onPress={logOut}>
                                 <Text style={{fontSize:10,color:'blue'}}>로그아웃</Text>
                             </TouchableOpacity>) : ''}
-                        <TouchableOpacity 
+                        <TouchableOpacity
                           onPress={() => {
                             if (loginCheck) {
                               navigation.navigate('Usagedetails');
@@ -182,7 +176,9 @@ function Main({navigation}){
                         }}>
                         <View style={[styles.lockToll,{borderColor: moojeeg ? 'red' : '#7D74E4'}]}>
                             <View>
-                                <FontAwesomeIcon icon={lock} style={{ color: moojeeg ? 'red' : '#7D74E4' }} size={35} />
+                            <TouchableOpacity  onPress={handleOpenDoor}>
+                                <FontAwesomeIcon icon={lock} style={{ color: moojeeg ? 'red' : '#7D74E4' }} size={40} />
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -217,6 +213,11 @@ function Main({navigation}){
                 <View style={{justifyContent:'center', alignItems:'center', marginTop:20}}>
                     <TouchableOpacity style={styles.useBtn} onPress={()=>{navigation.navigate('UseBook')}}>
                         <Text style={{fontSize:14, color:'#fff', fontWeight:'700'}}>이용백서</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{justifyContent:'center', alignItems:'center', marginTop:20}}>
+                    <TouchableOpacity style={styles.useBtn} onPress={()=>{navigation.navigate('WebSocketComponent')}}>
+                        <Text style={{fontSize:14, color:'#fff', fontWeight:'700'}}>웹소켓</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.mainTitle,{marginHorizontal:20,marginTop:'20%'}]}>
@@ -300,6 +301,6 @@ const styles = StyleSheet.create({
         padding: 3,
         borderRadius: 5,
     }
-})
+});
 
 export default Main
