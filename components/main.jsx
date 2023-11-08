@@ -1,5 +1,5 @@
 //메인 페이지
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,12 +19,14 @@ import {TextInput} from 'react-native-gesture-handler';
 import axios from 'axios';
 import {useAuth} from '../contexts/AuthContext';
 
+
+
 function Main({navigation}) {
   const [isEnteringPassword, setIsEnteringPassword] = useState(false);
   const [isMoojeegEnabled, setIsMoojeegEnabled] = useState(false);
   const [moo, setMoo] = useState(false);
 
-  const [lock, setLock] = useState(true);
+  const [lock, setLock] = useState(null);
   const [lockIcon, setLockIcon] = useState(faLock);
 
   const [moojeeg, setMoojeeg] = useState(false);
@@ -39,6 +41,20 @@ function Main({navigation}) {
   const serverUrl =
     'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app';
 
+    useEffect(() => {
+      // '/doorlock-status-get' 엔드포인트로 GET 요청을 보냅니다.
+      axios.get(`${serverUrl}/doorlock-status-get`)
+        .then(res => {
+          // 서버에서 반환한 데이터를 사용하여 도어락 상태 설정
+          console.log(lock);
+          setLock(res.data.doorlockStatus);
+          console.log(lock);
+        })
+        .catch(error => {
+          console.error('오류 발생: ' + error);
+        });
+    }, []);
+
   // 도어락 열림 닫힘
   const handleOpenDoor = () => {
     // 클라이언트에서 서버로 POST 요청을 보냅니다.
@@ -46,7 +62,6 @@ function Main({navigation}) {
       .post(`${serverUrl}/door-open`, {userId: 'test', doorlockStatus: lock})
       .then(response => {
         console.log(response.data);
-        setMoo(!response.data.doorlockStatus);
       })
       .catch(error => {
         console.error('오류 발생: ' + error);
