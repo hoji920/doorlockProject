@@ -1,5 +1,5 @@
 //메인 페이지
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,8 +18,6 @@ import {useState} from 'react';
 import {TextInput} from 'react-native-gesture-handler';
 import axios from 'axios';
 import {useAuth} from '../contexts/AuthContext';
-
-
 
 function Main({navigation}) {
   const [isEnteringPassword, setIsEnteringPassword] = useState(false);
@@ -41,19 +39,23 @@ function Main({navigation}) {
   const serverUrl =
     'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app';
 
-    useEffect(() => {
-      // '/doorlock-status-get' 엔드포인트로 GET 요청을 보냅니다.
-      axios.get(`${serverUrl}/doorlock-status-get`)
-        .then(res => {
-          // 서버에서 반환한 데이터를 사용하여 도어락 상태 설정
-          console.log(lock);
-          setLock(res.data.doorlockStatus);
-          console.log(lock);
-        })
-        .catch(error => {
-          console.error('오류 발생: ' + error);
-        });
-    }, []);
+  useEffect(() => {
+    // '/doorlock-status-get' 엔드포인트로 GET 요청을 보냅니다.
+    axios
+      .get(`${serverUrl}/doorlock-status-get`)
+      .then(res => {
+        // 서버에서 반환한 데이터를 사용하여 도어락 상태 설정
+        if (res.data.doorlockStatus) {
+          setLockIcon(faLock);
+        } else {
+          setLockIcon(faLockOpen);
+        }
+        setLock(res.data.doorlockStatus);
+      })
+      .catch(error => {
+        console.error('오류 발생: ' + error);
+      });
+  }, []);
 
   // 도어락 열림 닫힘
   const handleOpenDoor = () => {
@@ -71,7 +73,7 @@ function Main({navigation}) {
   //자물쇠 상태변경
   const lockChange = () => {
     if (!moojeeg) {
-      if (lockIcon === faLock) {
+      if (lock) {
         setLockIcon(faLockOpen);
         setLock(false);
       } else {
@@ -202,9 +204,9 @@ function Main({navigation}) {
           <TouchableOpacity
             onPress={() => {
               if (loginCheck) {
+                handleOpenDoor();
                 lockChange();
                 console.log(`도어락 상태 : ${lock}`);
-                handleOpenDoor();
               } else {
                 Alert.alert('알림', '로그인 후 이용합니다.');
               }
