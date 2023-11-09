@@ -1,5 +1,5 @@
 //메인 페이지
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -55,6 +55,39 @@ function Main({navigation}) {
       .catch(error => {
         console.error('오류 발생: ' + error);
       });
+  }, []);
+
+  //   webSocket
+  const ws = useRef(null);
+  useEffect(() => {
+    ws.current = new WebSocket(
+      `ws://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app`,
+    );
+    console.log(ws.current);
+    ws.current.onopen = () => {
+      // connection opened
+      console.log('connected');
+      // send a message
+    };
+
+    ws.current.onmessage = e => {
+      // a message was received
+      console.log(e.data);
+    };
+
+    ws.current.onerror = e => {
+      // an error occurred
+      console.log(e.message);
+    };
+
+    ws.current.onclose = e => {
+      // connection closed
+      console.log(e.code, e.reason);
+    };
+
+    return () => {
+      ws.current.close();
+    };
   }, []);
 
   // 도어락 열림 닫힘
@@ -206,6 +239,7 @@ function Main({navigation}) {
               if (loginCheck) {
                 handleOpenDoor();
                 lockChange();
+                ws.current.send(`doorStatus-${lock}`);
                 console.log(`도어락 상태 : ${lock}`);
               } else {
                 Alert.alert('알림', '로그인 후 이용합니다.');
