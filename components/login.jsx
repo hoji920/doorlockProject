@@ -14,13 +14,13 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import {useAuth} from '../contexts/AuthContext';
 function Login({navigation}) {
-  const {setLoginCheck} = useAuth();
+  // idText useState 사용하던 거 지우고 contexts애서 갖고옴
+  const {setLoginCheck, idText, setIdText} = useAuth();
 
   const serverUrl =
     'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app'; // 서버 url
 
   const handleLogin = () => {
-    console.log(idText, pwText);
     // POST 요청에 보낼 데이터
     const postData = {
       userId: idText,
@@ -44,7 +44,6 @@ function Login({navigation}) {
       });
   };
 
-  const [idText, setIdText] = useState('');
   const [pwText, setPwText] = useState('');
 
   const handleIdChange = newId => {

@@ -170,7 +170,7 @@ function Main({navigation}) {
             <TouchableOpacity onPress={() => navigation.navigate('login')}>
               <Text
                 style={[styles.headerBarText, {fontSize: 16, marginTop: 7}]}>
-                {loginCheck ? {idText} + '님 환영합니다' : '로그인을 해주세요.'}
+                {loginCheck ? idText + '님 환영합니다' : '로그인을 해주세요.'}
               </Text>
             </TouchableOpacity>
             <View style={{flexDirection: 'row', marginTop: 5}}>
