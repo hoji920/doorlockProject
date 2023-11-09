@@ -1,5 +1,6 @@
 //이용내역 페이지
-import React, { useState } from 'react';
+import React, { useState, useEffect }from 'react';
+import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,24 +12,25 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
+const serverUrl =
+'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app';
+
+
 function Usagedetails() {
+    useEffect(() => {
+        axios
+        .post(`${serverUrl}/usage-history-get`, {userId: 'test'})
+        .then(response => {
+            setData(response.data.usageHistory)
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('오류 발생: ' + error);
+        });
+        }, []);
 
     const [data,setData] = useState([
-        {
-            state : false,
-            day : '2023/07/23',
-            time : '19:02'
-        },
-        {
-            state : true,
-            day : '2023/07/21',
-            time : '09:02'
-        },
-        {
-            state : true,
-            day : '2022/01/21',
-            time : '07:02'
-        }
+
     ])
 
     const [updown,setUpDown] = useState(false);
@@ -36,8 +38,8 @@ function Usagedetails() {
     const updownBtn = () => {
 
         const sortedData = updown
-          ? [...data].sort((a, b) => (a.day > b.day ? 1 : -1))
-          : [...data].sort((a, b) => (a.day > b.day ? -1 : 1));
+          ? [...data].sort((a, b) => (a.dateHistory > b.dateHistory ? 1 : -1))
+          : [...data].sort((a, b) => (a.dateHistory > b.dateHistory ? -1 : 1));
 
         setData(sortedData);
         setUpDown(!updown);
@@ -45,12 +47,12 @@ function Usagedetails() {
 
     const ReadBox = ({ item }) => (
         <View style={styles.readBox}>
-          <Text style={[styles.statusText, { color: item.state ? 'red' : 'blue' }]}>
-            {item.state ? 'OPEN' : 'CLOSE'}
+          <Text style={[styles.statusText, { color: item.openHistory==="OPEN" ? 'blue' : 'red' }]}>
+        {item.openHistory ? 'OPEN' : 'CLOSE'}
           </Text>
           <View>
-            <Text style={[styles.textStyle, { fontSize: 16 }]}>{item.day}</Text>
-            <Text style={{ alignSelf: 'flex-end', color: '#000', fontSize: 12 }}>{item.time}</Text>
+            <Text style={[styles.textStyle, { fontSize: 16 }]}>{item.dateHistory}</Text>
+            <Text style={{ alignSelf: 'flex-end', color: '#000', fontSize: 12 }}>{item.timeHistory}</Text>
           </View>
         </View>
     );
