@@ -8,7 +8,12 @@ export function AuthProvider({children}) {
 
   return (
     <AuthContext.Provider
-      value={{loginCheck, setLoginCheck, idText, setIdText}}>
+      value={{
+        loginCheck,
+        setLoginCheck,
+        idText,
+        setIdText,
+      }}>
       {children}
     </AuthContext.Provider>
   );

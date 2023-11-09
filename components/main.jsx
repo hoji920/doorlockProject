@@ -31,7 +31,7 @@ function Main({navigation}) {
 
   //const [loginCheck, setLoginCheck] = useState(true);
   const [moojeegpw, setMooJeegPw] = useState('');
-  const {loginCheck, idText, setLoginCheck} = useAuth();
+  const {loginCheck, idText, setLoginCheck, pwValue, setPwValue} = useAuth();
 
   const handelMooJeegPwchange = value => {
     setMooJeegPw(value);
@@ -63,7 +63,6 @@ function Main({navigation}) {
     ws.current = new WebSocket(
       `ws://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app`,
     );
-    console.log(ws.current);
     ws.current.onopen = () => {
       // connection opened
       console.log('connected');
