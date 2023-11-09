@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Alert,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -104,6 +105,7 @@ function PwState({navigation}) {
             style={styles.okayBtn}
             onPress={() => {
               ws.current.send(`pwChange-${newpw}`);
+              Alert.alert('비밀번호 변경 완료~');
               navigation.navigate('main');
             }}>
             <Text style={{color: '#fff', fontSize: 16}}>확인</Text>

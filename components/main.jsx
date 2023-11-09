@@ -141,6 +141,7 @@ function Main({navigation}) {
             setMoojeeg(false);
             setIsMoojeegEnabled(false);
             setMoo(false);
+            ws.current.send('doorlockStats-unMujeok');
           },
         },
         {
@@ -173,6 +174,7 @@ function Main({navigation}) {
       setMoojeeg(true);
       setMooJeegPw('');
       setMoo(true);
+      ws.current.send(`doorlockStatus-mujeok`);
     } else {
       Alert.alert('알림', '올바른 비밀번호를 입력하세요.');
     }
