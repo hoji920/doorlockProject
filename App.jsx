@@ -20,7 +20,7 @@ import Usagedetails from './components/Usagedetails';
 import TemporaryPw from './components/TemporaryPw';
 import UseBook from './components/UseBook';
 import Reservation from './components/Reservation';
-import WebSocketComponent from './components/WebSocketComponent';
+
 
 const Stack = createStackNavigator();
 
@@ -42,10 +42,7 @@ function App() {
           <Stack.Screen name="TemporaryPw" component={TemporaryPw} />
           <Stack.Screen name="UseBook" component={UseBook} />
           <Stack.Screen name="Reservation" component={Reservation} />
-          <Stack.Screen
-            name="WebSocketComponent"
-            component={WebSocketComponent}
-          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

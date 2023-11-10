@@ -106,10 +106,10 @@ function Main({navigation}) {
   const lockChange = () => {
     if (!moojeeg) {
       if (lock) {
-        setLockIcon(faLockOpen);
+        setLockIcon(faLock);
         setLock(false);
       } else {
-        setLockIcon(faLock);
+        setLockIcon(faLockOpen);
         setLock(true);
       }
     }
@@ -141,7 +141,7 @@ function Main({navigation}) {
             setMoojeeg(false);
             setIsMoojeegEnabled(false);
             setMoo(false);
-            ws.current.send('doorlockStats-unMujeok');
+            ws.current.send('doorlockStatus-unMujeok');
           },
         },
         {
@@ -183,10 +183,8 @@ function Main({navigation}) {
   //무적 켜게
   const moojeegOn = () => {
     if (isMoojeegEnabled === true) {
-      if (moo === true) {
         // 이미 무적 모드가 활성화되어 있을 때 해제를 물어봅니다.
         askToDisableMoojeeg();
-      }
       setIsMoojeegEnabled(!isMoojeegEnabled);
     } else {
       // 무적 모드가 활성화되어 있지 않으면 활성화합니다.
@@ -238,9 +236,10 @@ function Main({navigation}) {
           <TouchableOpacity
             onPress={() => {
               if (loginCheck) {
-                handleOpenDoor();
+                //handleOpenDoor();
                 lockChange();
-                ws.current.send(`doorStatus-${lock}`);
+                //ws.current.send(`doorlockStatus-${lock}`);
+                lock ? ws.current.send(`doorlockStatus-close`) : ws.current.send(`doorlockStatus-open`);
                 console.log(`도어락 상태 : ${lock}`);
               } else {
                 Alert.alert('알림', '로그인 후 이용합니다.');
