@@ -40,6 +40,12 @@ function Main({navigation}) {
     'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app';
 
   useEffect(() => {
+    setInterval(() => {
+      ws.current.send('normal');
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
     // '/doorlock-status-get' 엔드포인트로 GET 요청을 보냅니다.
     axios
       .get(`${serverUrl}/doorlock-status-get`)
@@ -183,8 +189,8 @@ function Main({navigation}) {
   //무적 켜게
   const moojeegOn = () => {
     if (isMoojeegEnabled === true) {
-        // 이미 무적 모드가 활성화되어 있을 때 해제를 물어봅니다.
-        askToDisableMoojeeg();
+      // 이미 무적 모드가 활성화되어 있을 때 해제를 물어봅니다.
+      askToDisableMoojeeg();
       setIsMoojeegEnabled(!isMoojeegEnabled);
     } else {
       // 무적 모드가 활성화되어 있지 않으면 활성화합니다.
@@ -239,7 +245,9 @@ function Main({navigation}) {
                 //handleOpenDoor();
                 lockChange();
                 //ws.current.send(`doorlockStatus-${lock}`);
-                lock ? ws.current.send(`doorlockStatus-close`) : ws.current.send(`doorlockStatus-open`);
+                lock
+                  ? ws.current.send(`doorlockStatus-close`)
+                  : ws.current.send(`doorlockStatus-open`);
                 console.log(`도어락 상태 : ${lock}`);
               } else {
                 Alert.alert('알림', '로그인 후 이용합니다.');
