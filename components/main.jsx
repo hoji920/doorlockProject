@@ -39,11 +39,11 @@ function Main({navigation}) {
   const serverUrl =
     'https://port-0-door-lock-server-jvpb2alnwnfxkw.sel5.cloudtype.app';
 
-  useEffect(() => {
-    setInterval(() => {
-      ws.current.send('normal');
-    }, 2000);
-  }, []);
+  //   useEffect(() => {
+  //     setInterval(() => {
+  //       ws.current.send('normal');
+  //     }, 2000);
+  //   }, []);
 
   useEffect(() => {
     // '/doorlock-status-get' 엔드포인트로 GET 요청을 보냅니다.
@@ -325,6 +325,21 @@ function Main({navigation}) {
             onPress={() => navigation.navigate('Reservation')}
           />
         </View>
+
+        {/* 노말버튼 */}
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <MainButton
+            name={'노말 상태'}
+            onPress={() => {
+              ws.current.send('normal');
+            }}
+          />
+        </View>
+
         <View
           style={{
             justifyContent: 'center',
